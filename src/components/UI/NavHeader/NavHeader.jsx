@@ -6,11 +6,10 @@ import Toolbar from "@mui/material/Toolbar";
 import CssBaseline from "@mui/material/CssBaseline";
 import useScrollTrigger from "@mui/material/useScrollTrigger";
 import Box from "@mui/material/Box";
-import { Tabs, Tab, Typography } from "@mui/material";
+import { Typography } from "@mui/material";
 import Fab from "@mui/material/Fab";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import Fade from "@mui/material/Fade";
-import UploadExcel from "../../Uploads/UploadExcel";
 
 function ScrollTop(props) {
   const { children, window } = props;
