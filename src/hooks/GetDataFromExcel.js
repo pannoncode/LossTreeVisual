@@ -1,40 +1,11 @@
-const exception = [
-  "MS_GD Maker,MS_Teflon csere és hegesztok tisztítás",
-  "CO_Termékváltás,CO_Termékváltás",
-  "CO_Termékváltás",
-  "CIL",
-  "CIL,CIL_PIT STOP",
-];
-
-const kpiException = [
-  "Excluded time",
-  "Uptime",
-  "QL (PR)",
-  "TRL (PR)",
-  "PR",
-  "QL (OEE)",
-  "TRL (OEE)",
-  "OEE",
-  "Planned",
-  "Unplanned",
-  "MS_Tervezett,MS_Oktatás",
-  "MS_Tervezett,MS_Műszakváltás",
-];
-
-const otherKpi = ["Excluded time", "Uptime", "PR", "QL (PR)", "TRL (PR)"];
+import { exception, kpiException, otherKpi } from "../data/exceptions";
+import SeparatExcelData from "../data/SeparatesExcelData";
 
 const GetDataFromExcel = (dataArray) => {
   let unplannedArray = dataArray.slice();
   let plannedArray = [];
 
-  // for (let i = 0; i < unplannedArray.length; i++) {
-  //   for (let j = 0; j < exception.length; j++) {
-  //     if (exception[j] === unplannedArray[i]?.Unplanned) {
-  //       plannedArray.push(unplannedArray[i]);
-  //       unplannedArray.splice(i, 1);
-  //     }
-  //   }
-  // }
+  //ezt át kell gondolni, mert sok az ismétlés
 
   for (let i = unplannedArray.length - 1; i >= 0; i--) {
     for (let j = 0; j < exception.length; j++) {
@@ -48,11 +19,12 @@ const GetDataFromExcel = (dataArray) => {
 
   let kpi = [];
 
-  for (let i = 0; i < unplannedArray.length; i++) {
+  for (let i = unplannedArray.length - 1; i >= 0; i--) {
     for (let j = 0; j < kpiException.length; j++) {
       if (kpiException[j] === unplannedArray[i]?.Unplanned) {
         kpi.push(unplannedArray[i]);
         unplannedArray.splice(i, 1);
+        break;
       }
     }
   }
@@ -64,6 +36,7 @@ const GetDataFromExcel = (dataArray) => {
       if (otherKpi[j] === kpi[i]?.Unplanned) {
         othersKpi.push(kpi[i]);
         kpi.splice(i, 1);
+        break;
       }
   }
 
