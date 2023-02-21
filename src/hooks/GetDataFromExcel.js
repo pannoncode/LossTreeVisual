@@ -5,8 +5,7 @@ const GetDataFromExcel = (dataArray) => {
   let unplannedArray = dataArray.slice();
   let plannedArray = [];
 
-  //ezt át kell gondolni, mert sok az ismétlés
-
+  //ezt át kell gondolni, mind a nég ciklus ugyanazt csinálja
   for (let i = unplannedArray.length - 1; i >= 0; i--) {
     for (let j = 0; j < exception.length; j++) {
       if (exception[j] === unplannedArray[i]?.Unplanned) {
