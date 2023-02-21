@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment } from "react";
 
 import GetDataFromExcel from "../../hooks/GetDataFromExcel";
 
@@ -11,6 +11,8 @@ import DataLayout from "../UI/DataLayout/DataLayout";
 import Title from "../UI/Title/Title";
 import TableLayout from "./TableLayout/TableLayout";
 import Tables from "./Tables/Tables";
+
+import useChartsSetup from "../../hooks/ChartsSetup";
 
 const columns = [
   {
@@ -39,95 +41,20 @@ const DataTable = ({ data }) => {
   const { unplannedArray, plannedArray, sortOeeResult, kpi, othersKpi } =
     GetDataFromExcel(data);
 
-  //ezt át kell gondolni, mert sok az ismétlés
-  const [barChartUnplannedData, setBarChartUnplannedData] = useState({
-    labels: unplannedArray.map((data) => data.Unplanned),
-    datasets: [
-      {
-        label: "Nem tervezett állások - Összes",
-        data: unplannedArray.map((data) => data.Stops),
-      },
-    ],
-  });
+  const { barChartForSorterData, createBarChart, createPieChart } =
+    useChartsSetup();
 
-  const [topUnplannedData, setTopUnplannedData] = useState({
-    labels: sortOeeResult.map((data) => data.Unplanned),
-    datasets: [
-      {
-        label: "TOP 5 OEE % Veszteség",
-        data: sortOeeResult.map((data) =>
-          parseFloat(data.OeeLoss * 100).toFixed(2)
-        ),
-      },
-    ],
-  });
-
-  const [piePlannedData, setPiePlannedData] = useState({
-    labels: plannedArray.map((data) => data.Unplanned),
-    datasets: [
-      {
-        label: "Tervezett állások",
-        data: plannedArray.map((data) =>
-          parseFloat(data?.OeeLoss * 100).toFixed(2)
-        ),
-        backgroundColor: [
-          "rgb(255, 99, 132)",
-          "rgb(54, 162, 235)",
-          "rgb(255, 205, 86)",
-          "rgb(116, 235, 52)",
-          "rgb(83, 114, 207)",
-          "rgb(84, 18, 44)",
-          "rgb(84, 18, 44)",
-          "rgb(118, 48, 179)",
-        ],
-        hoverOffset: 4,
-      },
-    ],
-  });
-
-  const [pieKpiData, setPieKpiData] = useState({
-    labels: kpi.map((data) => data.Unplanned),
-    datasets: [
-      {
-        label: "Tervezett állások",
-        data: kpi.map((data) => parseFloat(data?.OeeLoss * 100).toFixed(2)),
-        backgroundColor: [
-          "rgb(255, 99, 132)",
-          "rgb(54, 162, 235)",
-          "rgb(255, 205, 86)",
-          "rgb(116, 235, 52)",
-          "rgb(83, 114, 207)",
-          "rgb(84, 18, 44)",
-          "rgb(84, 18, 44)",
-          "rgb(118, 48, 179)",
-        ],
-        hoverOffset: 4,
-      },
-    ],
-  });
-
-  const [otherKpi, setOtherKpi] = useState({
-    labels: othersKpi.map((data) => data.Unplanned),
-    datasets: [
-      {
-        label: "Tervezett állások",
-        data: othersKpi.map((data) =>
-          parseFloat(data?.OeeLoss * 100).toFixed(2)
-        ),
-        backgroundColor: [
-          "rgb(255, 99, 132)",
-          "rgb(54, 162, 235)",
-          "rgb(255, 205, 86)",
-          "rgb(116, 235, 52)",
-          "rgb(83, 114, 207)",
-          "rgb(84, 18, 44)",
-          "rgb(84, 18, 44)",
-          "rgb(118, 48, 179)",
-        ],
-        hoverOffset: 4,
-      },
-    ],
-  });
+  const topUnplannedData = barChartForSorterData(
+    sortOeeResult,
+    "TOP 5 OEE % Veszteség"
+  );
+  const piePlannedData = createPieChart(plannedArray, "Tervezett állások");
+  const barChartUnplannedData = createBarChart(
+    unplannedArray,
+    "Nem tervezett állások - Összes"
+  );
+  const pieKpiData = createPieChart(kpi, "Tervezett állások");
+  const otherKpi = createPieChart(othersKpi, "Tervezett állások");
 
   return (
     <Fragment>
