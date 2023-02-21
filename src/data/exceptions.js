@@ -4,6 +4,8 @@ export const exception = [
   "CO_Termékváltás",
   "CIL",
   "CIL,CIL_PIT STOP",
+  "MS_Tervezett,MS_Oktatás",
+  "MS_Tervezett,MS_Műszakváltás",
 ];
 
 export const kpiException = [
@@ -17,8 +19,6 @@ export const kpiException = [
   "OEE",
   "Planned",
   "Unplanned",
-  "MS_Tervezett,MS_Oktatás",
-  "MS_Tervezett,MS_Műszakváltás",
 ];
 
 export const otherKpi = [

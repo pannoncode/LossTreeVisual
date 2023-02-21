@@ -2,40 +2,12 @@ import React, { Fragment } from "react";
 
 import GetDataFromExcel from "../../hooks/GetDataFromExcel";
 
-import BarChart from "../Charts/BarChart";
-import ChartLayout from "../Charts/ChartLayout/ChartLayout";
-import PieLayout from "../Charts/ChartLayout/PieLayout";
-import PieChart from "../Charts/PieChart";
+import TableAndBarChart from "./TableAndBarChart/TableAndBarChart";
+import TableAndPieChart from "./TableAndBarChart/TableAndPieChart";
 
 import DataLayout from "../UI/DataLayout/DataLayout";
-import Title from "../UI/Title/Title";
-import TableLayout from "./TableLayout/TableLayout";
-import Tables from "./Tables/Tables";
 
 import useChartsSetup from "../../hooks/ChartsSetup";
-
-const columns = [
-  {
-    field: "unplanned",
-    headerName: "Állások",
-    width: 500,
-  },
-  {
-    field: "min",
-    headerName: "Idő",
-    width: 150,
-  },
-  {
-    field: "stops",
-    headerName: "Állások száma",
-    width: 150,
-  },
-  {
-    field: "loss",
-    headerName: "Veszteség %",
-    width: 150,
-  },
-];
 
 const DataTable = ({ data }) => {
   const { unplannedArray, plannedArray, sortOeeResult, kpi, othersKpi } =
@@ -59,63 +31,42 @@ const DataTable = ({ data }) => {
   return (
     <Fragment>
       <DataLayout>
-        <Title title="Nem tervezett állások - Top 5 Oee Loss" />
-        <TableLayout>
-          <Tables
-            data={sortOeeResult}
-            header={columns}
-            title={"Nem tervezett állások - Top 5 Oee Loss"}
-          />
-        </TableLayout>
-        <ChartLayout>
-          <BarChart barData={topUnplannedData} />
-        </ChartLayout>
+        <TableAndBarChart
+          title={"Nem tervezett állások - Top 5 Oee Loss"}
+          tableData={sortOeeResult}
+          tableTitle={"Nem tervezett állások - Top 5 Oee Loss"}
+          chartData={topUnplannedData}
+        />
       </DataLayout>
       <DataLayout>
-        <Title title="Tervezett Állások" />
-        <TableLayout>
-          <Tables
-            data={plannedArray}
-            header={columns}
-            title="Tervezett Állások"
-          />
-        </TableLayout>
-        <PieLayout>
-          <PieChart pieData={piePlannedData} />
-        </PieLayout>
+        <TableAndPieChart
+          title={"Tervezett Állások"}
+          tableData={plannedArray}
+          tableTitle={"Tervezett Állások"}
+          chartData={piePlannedData}
+        />
       </DataLayout>
       <DataLayout>
-        <Title title="Nem tervezett állások - Összes" />
-        <ChartLayout>
-          <BarChart barData={barChartUnplannedData} />
-        </ChartLayout>
-        <TableLayout>
-          <Tables
-            data={unplannedArray}
-            header={columns}
-            title={"Nem tervezett állások - Összes"}
-          />
-        </TableLayout>
+        <TableAndBarChart
+          title={"Nem tervezett állások - Összes"}
+          tableData={unplannedArray}
+          tableTitle={"Nem tervezett állások - Összes"}
+          chartData={barChartUnplannedData}
+        />
       </DataLayout>
       <DataLayout>
-        <Title title="ANT szerinti KPI" />
-        <TableLayout>
-          <Tables data={kpi} header={columns} title={"ANT szerinti KPI"} />
-        </TableLayout>
-        <PieLayout>
-          <PieChart pieData={pieKpiData} />
-        </PieLayout>
-        <Title title="ANT szerinti KPI 2" />
-        <TableLayout>
-          <Tables
-            data={othersKpi}
-            header={columns}
-            title={"ANT szerinti KPI"}
-          />
-        </TableLayout>
-        <PieLayout>
-          <PieChart pieData={otherKpi} />
-        </PieLayout>
+        <TableAndPieChart
+          title={"ANT szerinti KPI"}
+          tableData={kpi}
+          tableTitle={"ANT szerinti KPI"}
+          chartData={pieKpiData}
+        />
+        <TableAndPieChart
+          title={"ANT szerinti KPI 2"}
+          tableData={othersKpi}
+          tableTitle={"ANT szerinti KPI"}
+          chartData={otherKpi}
+        />
       </DataLayout>
     </Fragment>
   );
