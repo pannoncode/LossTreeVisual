@@ -36,9 +36,10 @@ const columns = [
 ];
 
 const DataTable = ({ data }) => {
-  const { unplannedArray, plannedArray, sortOeeResult, kpi } =
+  const { unplannedArray, plannedArray, sortOeeResult, kpi, othersKpi } =
     GetDataFromExcel(data);
 
+  //ezt át kell gondolni, mert sok az ismétlés
   const [barChartUnplannedData, setBarChartUnplannedData] = useState({
     labels: unplannedArray.map((data) => data.Unplanned),
     datasets: [
@@ -67,6 +68,50 @@ const DataTable = ({ data }) => {
       {
         label: "Tervezett állások",
         data: plannedArray.map((data) =>
+          parseFloat(data?.OeeLoss * 100).toFixed(2)
+        ),
+        backgroundColor: [
+          "rgb(255, 99, 132)",
+          "rgb(54, 162, 235)",
+          "rgb(255, 205, 86)",
+          "rgb(116, 235, 52)",
+          "rgb(83, 114, 207)",
+          "rgb(84, 18, 44)",
+          "rgb(84, 18, 44)",
+          "rgb(118, 48, 179)",
+        ],
+        hoverOffset: 4,
+      },
+    ],
+  });
+
+  const [pieKpiData, setPieKpiData] = useState({
+    labels: kpi.map((data) => data.Unplanned),
+    datasets: [
+      {
+        label: "Tervezett állások",
+        data: kpi.map((data) => parseFloat(data?.OeeLoss * 100).toFixed(2)),
+        backgroundColor: [
+          "rgb(255, 99, 132)",
+          "rgb(54, 162, 235)",
+          "rgb(255, 205, 86)",
+          "rgb(116, 235, 52)",
+          "rgb(83, 114, 207)",
+          "rgb(84, 18, 44)",
+          "rgb(84, 18, 44)",
+          "rgb(118, 48, 179)",
+        ],
+        hoverOffset: 4,
+      },
+    ],
+  });
+
+  const [otherKpi, setOtherKpi] = useState({
+    labels: othersKpi.map((data) => data.Unplanned),
+    datasets: [
+      {
+        label: "Tervezett állások",
+        data: othersKpi.map((data) =>
           parseFloat(data?.OeeLoss * 100).toFixed(2)
         ),
         backgroundColor: [
@@ -130,6 +175,20 @@ const DataTable = ({ data }) => {
         <TableLayout>
           <Tables data={kpi} header={columns} title={"ANT szerinti KPI"} />
         </TableLayout>
+        <PieLayout>
+          <PieChart pieData={pieKpiData} />
+        </PieLayout>
+        <Title title="ANT szerinti KPI 2" />
+        <TableLayout>
+          <Tables
+            data={othersKpi}
+            header={columns}
+            title={"ANT szerinti KPI"}
+          />
+        </TableLayout>
+        <PieLayout>
+          <PieChart pieData={otherKpi} />
+        </PieLayout>
       </DataLayout>
     </Fragment>
   );

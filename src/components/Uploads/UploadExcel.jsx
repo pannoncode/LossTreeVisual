@@ -5,7 +5,11 @@ const UploadExcel = (props) => {
   const { uploadFileHandler } = ReadExcel();
 
   return (
-    <Button variant="contained" component="label" sx={{ margin: "1rem" }}>
+    <Button
+      variant="contained"
+      component="label"
+      sx={{ width: 208, marginTop: ".5rem" }}
+    >
       {props.title}
       <input
         hidden

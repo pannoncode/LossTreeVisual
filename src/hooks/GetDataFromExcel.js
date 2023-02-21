@@ -17,7 +17,11 @@ const kpiException = [
   "OEE",
   "Planned",
   "Unplanned",
+  "MS_Tervezett,MS_Oktatás",
+  "MS_Tervezett,MS_Műszakváltás",
 ];
+
+const otherKpi = ["Excluded time", "Uptime", "PR", "QL (PR)", "TRL (PR)"];
 
 const GetDataFromExcel = (dataArray) => {
   let unplannedArray = dataArray.slice();
@@ -53,12 +57,22 @@ const GetDataFromExcel = (dataArray) => {
     }
   }
 
+  let othersKpi = [];
+
+  for (let i = kpi.length - 1; i >= 0; i--) {
+    for (let j = 0; j < otherKpi.length; j++)
+      if (otherKpi[j] === kpi[i]?.Unplanned) {
+        othersKpi.push(kpi[i]);
+        kpi.splice(i, 1);
+      }
+  }
+
   let sorter = [...unplannedArray];
   sorter.sort((a, b) => b.OeeLoss - a.OeeLoss);
 
   let sortOeeResult = sorter.slice(0, 5);
 
-  return { unplannedArray, plannedArray, sortOeeResult, kpi };
+  return { unplannedArray, plannedArray, sortOeeResult, kpi, othersKpi };
 };
 
 export default GetDataFromExcel;
